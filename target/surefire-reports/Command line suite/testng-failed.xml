@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite verbose="0" name="Failed suite [Command line suite]">
+  <test name="Command line test(failed)">
+    <classes>
+      <class name="player.NewTest">
+        <methods>
+          <include name="afterClass"/>
+          <include name="afterTest"/>
+          <include name="beforeClass"/>
+          <include name="beforeTest"/>
+        </methods>
+      </class> <!-- player.NewTest -->
+      <class name="game.GameTest">
+        <methods>
+          <include name="beforeClass"/>
+          <include name="beforeTest"/>
+          <include name="afterTest"/>
+          <include name="afterClass"/>
+        </methods>
+      </class> <!-- game.GameTest -->
+      <class name="game.GameHandlerTest">
+        <methods>
+          <include name="beforeTest"/>
+          <include name="afterTest"/>
+          <include name="beforeMethod"/>
+          <include name="beforeSuite"/>
+          <include name="afterClass"/>
+          <include name="testBD"/>
+          <include name="afterSuite"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- game.GameHandlerTest -->
+      <class name="cities.parsers.ParserTest">
+        <methods>
+          <include name="beforeClass"/>
+          <include name="afterClass"/>
+          <include name="beforeTest"/>
+          <include name="afterTest"/>
+        </methods>
+      </class> <!-- cities.parsers.ParserTest -->
+    </classes>
+  </test> <!-- Command line test(failed) -->
+</suite> <!-- Failed suite [Command line suite] -->

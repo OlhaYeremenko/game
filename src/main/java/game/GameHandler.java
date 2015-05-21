@@ -1,7 +1,9 @@
 package game;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,84 +14,67 @@ import org.xml.sax.SAXException;
 import cities.CityParserFactory;
 import cities.parsers.AbstractParser;
 
-public class GameHandler {
+public class GameHandler implements IGameHandler {
 
-//	private static ArrayList<String> cities=getCityList();
-
-	public static char getFirst(String word) {
+	@Override
+	public char getFirstChar(String word) {
 		return word.charAt(0);
 	}
 
-	public static char getLast(String word) {
-		if (word.charAt(word.length() - 1) == "û".charAt(0)
-				|| word.charAt(word.length() - 1) == "ü".charAt(0)) {
+	@Override
+	public char getLastChar(String word) {
+		if (word.charAt(word.length() - 1) == 'Û'
+				|| word.charAt(word.length() - 1) == 'Ü') {
 			return word.charAt(word.length() - 2);
 		}
-
 		return word.charAt(word.length() - 1);
 	}
 
-	public static boolean checkInArray(String word) {
-		if (Game.cities.contains(word)) {
+	@Override
+	public boolean checkInArray(String word) {
+		if (Game.citiesOfGame.contains(word)) {
 			return true;
 		}
 		return false;
 	}
+	
 
-	public static String findInArray(char firstChar) {
-		for (String city : Game.cities) {
-			if (Character.toUpperCase(getFirst(city)) == Character
-					.toUpperCase(firstChar)) {
+	@Override
+	public String findInArray(char charInWord) {
+		for (String city : Game.citiesOfGame) {
+			if (this.getFirstChar(city)== charInWord) {
 				return city;
 			}
 		}
 		return null;
+	}	
 
-	}
-	static  ArrayList<String> getCityList(){
+	@Override
+	public ArrayList<String> getCityList() {
 		CityParserFactory cFactory = new CityParserFactory();
-		AbstractParser parser = cFactory.createCitiesBuilder("EXCEL");
+		AbstractParser parser = null;
 		try {
-			parser.cityParse("city");
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			parser = cFactory.createCitiesBuilder();
+			parser.cityParse();
+			Collections.shuffle(parser.getCities());
+			return parser.getCities();
+		} catch (FileNotFoundException e) {		
+			System.out.println("Data file not found");
 		}
-		return parser.getCities();
-		
+		return null;
 	}
 
-	public static char firstStep() throws JDOMException, IOException,
-		ParserConfigurationException, SAXException {	
-		Random random = new Random();
-		int index = random.nextInt(Game.cities.size());
-		System.out.println(Game.cities.get(index).toString());
-		Game.cities.remove(Game.cities.get(index));
-		return getLast(Game.cities.get(index));
+	@Override
+	public char firstStep() {
+			Random random = new Random();
+			int index = random.nextInt(Game.citiesOfGame.size());
+			System.out.println(Game.citiesOfGame.get(index).toString());
+			char lstChar = this.getLastChar(Game.citiesOfGame.get(index));
+			Game.citiesOfGame.remove(Game.citiesOfGame.get(index));
+			return lstChar;
+		}
 	}
 
-	/*
-	 * public void makeMove() { String city =findInArray(lastChar); if (city !=
-	 * null) { lastChar = getLast(city); System.out.println(city);
-	 * citiesq.remove(city); } else { System.out.println("There is no words ");
-	 * }
-	 * 
-	 * }
-	 * 
-	 * 
-	 * public void makeMove(String word) { if (checkInArray(word)) { lastChar =
-	 * getLast(word); System.out.println(word); citiesq.remove(word); }
-	 */
 
-	// }
 
-}
+

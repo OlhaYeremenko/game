@@ -7,19 +7,18 @@ import java.util.ArrayList;
 
 public class Computer extends Player {
 
+	@Override
+	public void makeMove() {
 
-	public char makeMove(char charInCity) {
-
-		String city = GameHandler.findInArray(charInCity);
+		String city = gameHandler.findInArray(lastChar);
 		if (city != null) {
-			charInCity = GameHandler.getLast(city);
-			System.out.println(city);
-			Game.cities.remove(city);
+			lastChar = gameHandler.getLastChar(city);
+		    System.out.println("Computer :\n"+city);
+			Game.citiesOfGame.remove(city);
 		} else {
-			  Game.winner="You"; 
-			return 0;
-		}
-		return charInCity;
+			  lastChar=0;
+			 Game.looserOfGame="computer"; 
+		}	
 	}
 
 }

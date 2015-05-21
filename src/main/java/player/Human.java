@@ -3,53 +3,66 @@ package player;
 import game.Game;
 import game.GameHandler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 public class Human extends Player {
+public String name;
 
-	// private static ArrayList<String> cities=;
-	// private static char lastChar;
 
-	/*
-	 * public static void main(String[] args) {
-	 * 
-	 * citiesq = new ArrayList<String>(); citiesq.add("Сумы");
-	 * citiesq.add("Харьков"); System.out.println(checkWord("Сумы"));
-	 * System.out.println(getLast(" сумы"));
-	 * System.out.println(getFirst("сумы"));
-	 * System.out.println(getLast("Харьков")); makeMove1("Харьков");
-	 * System.out.println(lastChar);
-	 * 
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public char makeMove(char charInCity) {
-	 * 
-	 * String city = GameHandler.findInArray(charInCity); if (city != null) {
-	 * charInCity = GameHandler.getLast(city); System.out.println(city);
-	 * citiesq.remove(city); } else { System.out.println("There is no words ");
-	 * } return charInCity; }
-	 */
-
-	public char makeMove(char charInCity) {
-		System.out.println("Твой ход:");
-		Scanner sr = new Scanner(System.in);
-		String word = sr.nextLine();
-		if (word.compareToIgnoreCase("exit") == 1) {
-        Game.winner="Computer";   
-			return 0;
-		}
-
-		else if (GameHandler.checkInArray(word)) {
-			charInCity = GameHandler.getLast(word);
-		//	System.out.println(word);
-			Game.cities.remove(word);
-		}
-		return charInCity;
-	}
+	public Human(String name) {
+		setName(name);
 }
+	private static final Logger LOGGER_INFO = Logger.getLogger(Game.class);
+    private static final Logger LOGGER_ERR = Logger.getLogger(Game.class);
+    
+	@Override
+	public void makeMove() {
+
+			System.out.println(this.name+" :");
+			BufferedReader bf= new BufferedReader(new InputStreamReader(System.in));
+
+			String word=null;
+			try {
+				word = bf.readLine().toUpperCase();
+			} catch (IOException e) {
+				LOGGER_ERR.info(" Пустой массив! "+e.getMessage());
+				System.out.println("Пустой массив!");
+			}
+			if (word.compareToIgnoreCase("Exit") == 0) {
+				lastChar=0;
+				Game.looserOfGame=name;
+			}
+			else if (gameHandler.checkInArray(word)) {
+				LOGGER_INFO.info("Игрок "+ this.name+" ввел слово "+word);
+				lastChar = gameHandler.getLastChar(word);
+				Game.citiesOfGame.remove(word);
+			}
+			else{
+				lastChar=0;
+				System.out.println("Пробуй еще раз!");
+				this.makeMove();
+			}
+	
+		}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	}
+	
+	
+
+

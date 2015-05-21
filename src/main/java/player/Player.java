@@ -1,7 +1,18 @@
 package player;
 
-public abstract class Player {
+import game.GameHandler;
 
-	public abstract char makeMove(char charInCity);
-			
+public abstract  class Player{
+	
+	public static  char lastChar;
+	public GameHandler gameHandler;	
+
+
+	public abstract void makeMove() ;
+
+	public Player() {
+		gameHandler= new GameHandler();
+	}
+
+
 }
